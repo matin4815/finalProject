@@ -49,9 +49,9 @@ public class Post {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    private boolean isActive = true;
-    private int like;
-    private int dislike;
+//    private boolean isActive = true;
+//    private int like;
+//    private int dislike;
 
 
 }

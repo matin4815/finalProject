@@ -4,10 +4,9 @@ import com.clarity.finalproject.dto.TagsDTO;
 import com.clarity.finalproject.service.TagsService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/tags")
@@ -25,4 +24,17 @@ public class TagsController {
     public TagsDTO saveTag(@RequestBody TagsDTO tagsDTO){
         return modelMapper.map(tagsService.saveTagByDTO(tagsDTO), TagsDTO.class);
     }
+
+    @GetMapping(value = "/get/names")
+    public List<String> getAllTagNames(){
+        return this.tagsService.findAllTagNames();
+    }
+
+    @GetMapping(value = "/get/{tagName}")
+    public String getTagName(@PathVariable(value = "tagName") String tagName){
+        return tagsService.findTag(tagName);
+    }
+
+
+
 }
