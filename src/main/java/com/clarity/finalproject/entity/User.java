@@ -2,6 +2,7 @@ package com.clarity.finalproject.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,10 +27,14 @@ public class User {
     private String email;
     private String phone;
 
+    @NotNull
     @Column(unique = true)
     private String userName;
+    @NotNull
     private String password;
 
     @OneToMany(mappedBy = "user")
     private List<Post> posts;
+
+    private Boolean isLoggedIn;
 }
