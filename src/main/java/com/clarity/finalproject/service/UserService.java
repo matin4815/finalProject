@@ -7,6 +7,7 @@ import com.clarity.finalproject.exceptions.InvalidUsername;
 import com.clarity.finalproject.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,20 +32,27 @@ public class UserService {
 
     public User signUpUser(UserDTO userDTO){
         User user = modelMapper.map(userDTO, User.class);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodedPassword = encoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
         return userRepository.save(user);
     }
 
-    @Transactional
-    public User loginUser(UserDTO userInfo){
-        User user = modelMapper.map(userInfo, User.class);
-        User existingUser = findUser(user.getUserName());
+    public boolean loginUser(UserDTO userDTO){
+        boolean didLogIn = false;
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodedPassword = encoder.encode(userDTO.getPassword());
+        userDTO.setPassword(encodedPassword);
+        User existingUser = findUser(userDTO.getUserName());
         if(existingUser != null){
-            if(existingUser.getPassword().equals(user.getPassword())){
-                user.setIsLoggedIn(true);
-                userRepository.save(user);
+            if(existingUser.getPassword().equals(userDTO.getPassword())){
+                this.userRepository.loginUser(true, userDTO.getUserName());
+                didLogIn = true;
             }
+        }else{
+            System.out.println("this user name does not exist");
         }
-        return user;
-
+        return didLogIn;
     }
+
 }

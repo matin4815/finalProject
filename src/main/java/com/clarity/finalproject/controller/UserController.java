@@ -25,8 +25,15 @@ public class UserController {
         return modelMapper.map(userService.signUpUser(userDTO), UserDTO.class);
     }
 
+    // i have a working log in but i dont no how to map to a query exactly
     @PutMapping(value = "/login")
-    public UserDTO loginUser(@RequestBody UserDTO userInfo){
-        return modelMapper.map(userService.loginUser(userInfo), UserDTO.class);
+    public void loginUser(@RequestBody UserDTO userDTO){
+        boolean didLogIn = this.userService.loginUser(userDTO);
+        if(didLogIn){
+            System.out.println("user is logged in");
+        }else{
+            System.out.println("didnt log in");
+        }
     }
+
 }

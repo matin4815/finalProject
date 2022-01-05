@@ -2,6 +2,7 @@ package com.clarity.finalproject.dto;
 
 
 import com.sun.istack.NotNull;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
